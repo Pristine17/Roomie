@@ -1,62 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-     >
-    <item
-        android:id="@+id/item1"
-        android:title="Item 1">
-    </item>
-    <item
-        android:id="@+id/item2"
-        android:title="Item 2">
-    </item>
-    <item
-    android:id="@+id/item3"
-    android:title="Item 3">
-</item>
-    <item
-        android:id="@+id/item4"
-        android:title="Item 4">
-    </item>
-    <item
-        android:id="@+id/item5"
-        android:title="Item 5">
-    </item>
-    <item
-        android:id="@+id/item6"
-        android:title="Item 6">
-    </item>
-    <item
-        android:id="@+id/item7"
-        android:title="Item 7">
-    </item>
-    <item
-        android:id="@+id/item8"
-        android:title="Item 8">
-    </item>
-    <item
-        android:id="@+id/item9"
-        android:title="Item 9">
-    </item>
-    <item
-        android:id="@+id/item10"
-        android:title="Item 10">
-    </item>
-    <item
-        android:id="@+id/item11"
-        android:title="Item 11">
-    </item>
-    <item
-        android:id="@+id/item12"
-        android:title="Item 12">
-    </item>
-    <item
-        android:id="@+id/item13"
-        android:title="Item 13">
-    </item>
-    <item
-        android:id="@+id/logout"
-        android:title="Logout">
-    </item>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_48dp"
+            android:title="@string/nav_home" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_error_outline_black_48dp"
+            android:title="@string/nav_about" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_black_48dp"
+            android:title="@string/nav_settings" />
+
+        <item
+            android:id="@+id/navigation_subheader"
+            android:title="@string/nav_sub_header">
+            <menu>
+                <item
+                    android:id="@+id/nav_account"
+                    android:icon="@drawable/ic_account_box_black_48dp"
+                    android:title="@string/nav_account" />
+                <item
+                    android:id="@+id/nav_cart"
+                    android:icon="@drawable/ic_shopping_cart_black_48dp"
+                    android:title="@string/nav_cart" />
+            </menu>
+        </item>
+    </group>
 
 </menu>

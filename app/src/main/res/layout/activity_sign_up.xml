@@ -23,28 +23,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:textColor="#009688"
+            android:textColor="#29B6F6"
             android:hint="Enter email"
+            android:textSize="20sp"
+            android:textStyle="bold"
             android:fontFamily="sans-serif-thin"
-            android:textColorHint="#2196F3"
+            android:textColorHint="#29B6F6"
             android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:fontFamily="sans-serif-thin"
-            android:textColor="#009688"
+            android:textColor="#29B6F6"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:textColorHint="#2196F3"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColorHint="#29B6F6"
             android:hint="Enter password"
             android:inputType="textPassword" />
 
         <Button
             android:id="@+id/buttonSignup"
             android:layout_width="match_parent"
-            android:textColor="#2196F3"
-
+            android:layout_gravity="center_horizontal"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:minHeight="48dp"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:text="Sign Up" />
@@ -53,20 +59,21 @@
             android:id="@+id/textViewSignin"
             android:textAlignment="center"
             android:layout_margin="15dp"
-                android:textColor="#EF5350"
+            android:textColor="#EF5350"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
 
     <TextView
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:fontFamily="sans-serif-thin"
-        android:textColor="#2196F3"
+        android:textColor="#29B6F6"
         android:layout_width="wrap_content"
+        android:textStyle="bold"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="User Registerteration"
+        android:text="User Registration"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal"
         android:layout_alignParentTop="true"

@@ -2,140 +2,122 @@ package com.example.satwik.roomie;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    Toolbar toolbar;
+    private NavigationView mNavigationView;
+    private DrawerLayout mDrawerLayout;
+    final String nav_home="NAV_HOME";
+    final String nav_about="NAV_ABOUT";
+    final String nav_settings="NAV_SETTINGS";
+    final String nav_account="NAV_ACCOUNT";
+    final String nav_cart="NAV_CART";
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final FragmentManager fragmentManager=getSupportFragmentManager();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mNavigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        Fragment fragment=null;
+                        String tag="";
+                        int id=menuItem.getItemId();
+                        switch (id)
+                        {
+                            case R.id.nav_home: fragment=fragmentManager.findFragmentByTag(nav_home);
+                                                            if(fragment==null)
+                                                            {
+                                                                //fragment=new Cart();
+                                                                tag=nav_home;
+                                                            } break;
+                            case R.id.nav_about:fragment=fragmentManager.findFragmentByTag(nav_about);
+                                                            if(fragment==null)
+                                                            {
+                                                                //fragment=new Cart();
+                                                                tag=nav_about;
+                                                            } break;
+                            case R.id.nav_settings:fragment=fragmentManager.findFragmentByTag(nav_settings);
+                                                            if(fragment==null)
+                                                            {
+                                                                //fragment=new Cart();
+                                                                tag=nav_settings;
+                                                            } break;
+                            case R.id.nav_account:fragment=fragmentManager.findFragmentByTag(nav_account);
+                                                            if(fragment==null)
+                                                            {
+                                                                //fragment=new Cart();
+                                                                tag=nav_account;
+                                                            } break;
+                            case R.id.nav_cart:fragment=fragmentManager.findFragmentByTag(nav_cart);
+                                                            if(fragment==null)
+                                                            {
+                                                                fragment=new Cart();
+                                                                tag=nav_cart;
+                                                            } break;
+                        }
+                        Log.e("YOLO",tag);
+                        if(fragment!=null) {
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.content_frame, fragment, tag);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+                        }
+                        menuItem.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        return true;
+                    }
+                });
+
+
+
 
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
 
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+//    @Override
+//    public void onBackPressed() {
+//        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+//            getSupportFragmentManager().popBackStack();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
 
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            switch (position)
-            {
-                case 0:
-                        tab1 t1 = new tab1();
-                        return t1;
-                case 1:
-                    tab2 t2 = new tab2();
-                    return t2;
-                case 2:
-                    tab3 t3 = new tab3();
-                    return t3;
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "Tab1";
-                case 1:
-                    return "Tab2";
-                case 2:
-                    return "Tab3";
-            }
-            return null;
-        }
-    }
 }
