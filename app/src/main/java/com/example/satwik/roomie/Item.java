@@ -8,7 +8,7 @@ import android.media.Image;
  */
 public class Item {
 
-    private Bitmap image;
+    private String imageURI;
     private String itemName;
     private String itemPrice;
     private String itemQuant;
@@ -18,20 +18,20 @@ public class Item {
 
     }
 
-    public Item(Bitmap image,String itemName,String itemPrice,String itemQuant)
+    public Item(String imageURI,String itemName,String itemPrice,String itemQuant)
     {
-        this.image=image;
+        this.imageURI=imageURI;
         this.itemName=itemName;
         this.itemPrice=itemPrice;
         this.itemQuant=itemQuant;
     }
 
-    public Bitmap getImage() {
-        return image;
+    public String getImageURI() {
+        return imageURI;
     }
 
-    public void setImage(int imageID) {
-        this.image = image;
+    public void setImageURI(String imageURI) {
+        this.imageURI = imageURI;
     }
 
     public String getItemName() {

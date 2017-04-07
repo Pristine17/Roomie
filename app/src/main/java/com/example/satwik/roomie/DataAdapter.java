@@ -32,7 +32,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(DataAdapter.ViewHolder holder, int position) {
         Item curr=items.get(position);
-        holder.itemImage.setImageBitmap(curr.getImage());
+      //  holder.itemImage.setImageBitmap(curr.getImage());
         holder.itemTitle.setText(curr.getItemName());
         holder.itemPrice.setText(curr.getItemPrice());
         holder.itemPrice.setText(curr.getItemQuant());

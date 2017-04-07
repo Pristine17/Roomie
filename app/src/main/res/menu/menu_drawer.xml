@@ -27,6 +27,10 @@
                     android:id="@+id/nav_cart"
                     android:icon="@drawable/ic_shopping_cart_black_48dp"
                     android:title="@string/nav_cart" />
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@drawable/ic_power_settings_new_black_48dp"
+                    android:title="Logout"></item>
             </menu>
         </item>
     </group>

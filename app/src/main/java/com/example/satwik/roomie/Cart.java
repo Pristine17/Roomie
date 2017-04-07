@@ -20,14 +20,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,18 +34,19 @@ import java.util.ArrayList;
  */
 public class Cart extends Fragment implements View.OnClickListener {
 
-    private ArrayList<Item> items=new ArrayList<Item>();
+    private ArrayList<Item> items = new ArrayList<Item>();
     View rootview;
     DataAdapter adapter;
     RecyclerView recyclerView;
     private View dialogView;
     private AlertDialog.Builder alertDialog;
-    private boolean add=false;
+    private boolean add = false;
     private EditText add_item;
     private EditText price;
     private EditText quantity;
     private ImageButton addImage;
     Bitmap thumbnail;
+    Uri fullPhotoUri;
 
     static final int REQUEST_IMAGE_GET = 1;
 
@@ -59,11 +57,12 @@ public class Cart extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootview=inflater.inflate(R.layout.cart,container,false);
+        rootview = inflater.inflate(R.layout.cart, container, false);
 
         initViews();
         initDialog();
@@ -72,15 +71,13 @@ public class Cart extends Fragment implements View.OnClickListener {
     }
 
 
-
-    private void initViews(){
+    private void initViews() {
         FloatingActionButton fab = (FloatingActionButton) rootview.findViewById(R.id.fab);
-        if(fab==null)
-        {
+        if (fab == null) {
             Log.e("yolo", "dammit");
         }
         fab.setOnClickListener(this);
-        recyclerView = (RecyclerView)rootview.findViewById(R.id.card_recycler_view);
+        recyclerView = (RecyclerView) rootview.findViewById(R.id.card_recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -88,11 +85,11 @@ public class Cart extends Fragment implements View.OnClickListener {
         recyclerView.setAdapter(adapter);
 
 
-        items.add(new Item(BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.ic_add_black_48dp),"Apple","25","2"));
-        items.add(new Item(BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.ic_edit_black_48dp),"Orange","50","1"));
-        items.add(new Item(BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.ic_home_black_48dp),"Grapes","40","3"));
-        items.add(new Item(BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.ic_error_outline_black_48dp),"Watermelon","567","50"));
-        items.add(new Item(BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.ic_shopping_cart_black_48dp),"Musk Melon","33","2"));
+//        items.add(new Item("fgdfg","Apple","25","2"));
+//        items.add(new Item("dfgdfgd","Orange","50","1"));
+//        items.add(new Item("dfgdfgdfgd","Grapes","40","3"));
+//        items.add(new Item("dfgdgdfgdf","Watermelon","567","50"));
+//        items.add(new Item("dfgdfgd","Musk Melon","33","2"));
 
         adapter.notifyDataSetChanged();
 
@@ -130,7 +127,7 @@ public class Cart extends Fragment implements View.OnClickListener {
 //        });
     }
 
-    private void initSwipe(){
+    private void initSwipe() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
@@ -142,14 +139,13 @@ public class Cart extends Fragment implements View.OnClickListener {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
 
-                if (direction == ItemTouchHelper.LEFT){
+                if (direction == ItemTouchHelper.LEFT) {
                     adapter.removeItem(position);
+                    AddToArchive();
                 } else {
                     removeView();
-                    edit_position = position;
-                    alertDialog.setTitle("Edit Country");
-                    add_item.setText(items.get(position).toString());
-                    alertDialog.show();
+                    adapter.removeItem(position);
+                    TaskCompleted();
                 }
             }
 
@@ -157,26 +153,26 @@ public class Cart extends Fragment implements View.OnClickListener {
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
                 Bitmap icon;
-                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
 
                     View itemView = viewHolder.itemView;
                     float height = (float) itemView.getBottom() - (float) itemView.getTop();
                     float width = height / 3;
 
-                    if(dX > 0){
+                    if (dX > 0) {
                         p.setColor(Color.parseColor("#388E3C"));
-                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
-                        c.drawRect(background,p);
+                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
+                        c.drawRect(background, p);
                         icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_edit_black_48dp);
-                        RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
-                        c.drawBitmap(icon,null,icon_dest,p);
+                        RectF icon_dest = new RectF((float) itemView.getLeft() + width, (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width);
+                        c.drawBitmap(icon, null, icon_dest, p);
                     } else {
                         p.setColor(Color.parseColor("#D32F2F"));
-                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
-                        c.drawRect(background,p);
+                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+                        c.drawRect(background, p);
                         icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_black_48dp);
-                        RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
-                        c.drawBitmap(icon,null,icon_dest,p);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
+                        c.drawBitmap(icon, null, icon_dest, p);
                     }
                 }
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
@@ -186,14 +182,14 @@ public class Cart extends Fragment implements View.OnClickListener {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void initDialog(){
+    private void initDialog() {
         alertDialog = new AlertDialog.Builder(getActivity());
-        dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_layout,null);
+        dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_layout, null);
         alertDialog.setView(dialogView);
-        add_item = (EditText)dialogView.findViewById(R.id.add_item);
-        price=(EditText) dialogView.findViewById(R.id.price);
-        quantity=(EditText) dialogView.findViewById(R.id.quantity);
-        addImage=(ImageButton) dialogView.findViewById(R.id.addImage);
+        add_item = (EditText) dialogView.findViewById(R.id.add_item);
+        price = (EditText) dialogView.findViewById(R.id.price);
+        quantity = (EditText) dialogView.findViewById(R.id.quantity);
+        addImage = (ImageButton) dialogView.findViewById(R.id.addImage);
 
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,12 +200,12 @@ public class Cart extends Fragment implements View.OnClickListener {
         alertDialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(add){
-                    add =false;
-                   adapter.addItem(new Item(thumbnail,add_item.getText().toString(),price.getText().toString(),quantity.getText().toString()));
+                if (add) {
+                    add = false;
+                    adapter.addItem(new Item(" 1 ", add_item.getText().toString(), price.getText().toString(), quantity.getText().toString()));
                     dialog.dismiss();
                 } else {
-                   // items.set(edit_position,add_item.getText().toString());
+                    // items.set(edit_position,add_item.getText().toString());
                     adapter.notifyDataSetChanged();
                     dialog.dismiss();
                 }
@@ -230,36 +226,43 @@ public class Cart extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
-          // thumbnail = data.getParcelable("data");
-            Uri fullPhotoUri = data.getData();
-            try{
+            // thumbnail = data.getParcelable("data");
+            fullPhotoUri = data.getData();
+            try {
                 thumbnail = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), fullPhotoUri);
-            }catch(IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            Log.e("YOLO",fullPhotoUri.toString());
+            Log.e("YOLO", fullPhotoUri.toString());
 
             // Do work with photo saved at fullPhotoUri
 
         }
     }
 
-    private void removeView(){
-        if(dialogView.getParent()!=null) {
+    private void removeView() {
+        if (dialogView.getParent() != null) {
             ((ViewGroup) dialogView.getParent()).removeView(dialogView);
         }
+    }
+
+    public void TaskCompleted() {
+
+    }
+
+    public void AddToArchive() {
+
     }
 
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.fab:
                 removeView();
                 add = true;
-                alertDialog.setTitle("Add Country");
+                alertDialog.setTitle("Add Item");
                 add_item.setText("");
                 alertDialog.show();
                 break;
