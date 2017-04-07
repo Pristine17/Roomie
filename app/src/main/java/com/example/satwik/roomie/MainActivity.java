@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_account:
                 fragment = fragmentManager.findFragmentByTag(nav_account);
                 if (fragment == null) {
-                    //fragment=new Cart();
+                    fragment=new ProfileFragment();
                     tag = nav_account;
                 }
                 break;
