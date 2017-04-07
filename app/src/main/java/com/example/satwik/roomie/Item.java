@@ -12,18 +12,31 @@ public class Item {
     private String itemName;
     private String itemPrice;
     private String itemQuant;
+    private String addedBy;
 
     public Item()
     {
 
     }
 
-    public Item(String imageURI,String itemName,String itemPrice,String itemQuant)
+
+
+    public Item(String imageURI, String itemName, String itemPrice, String itemQuant, String addedBy)
     {
         this.imageURI=imageURI;
         this.itemName=itemName;
         this.itemPrice=itemPrice;
         this.itemQuant=itemQuant;
+
+        this.addedBy=addedBy;
+    }
+
+    public String getAddedBy() {
+        return addedBy;
+    }
+
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
     }
 
     public String getImageURI() {

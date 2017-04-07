@@ -1,8 +1,10 @@
 package com.example.satwik.roomie;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -26,6 +28,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -35,6 +43,9 @@ import java.util.ArrayList;
 public class Cart extends Fragment implements View.OnClickListener {
 
     private ArrayList<Item> items = new ArrayList<Item>();
+    private ArrayList<String> ids=new ArrayList<>();
+    final private String email_key="EMAIL";
+    static String email;
     View rootview;
     DataAdapter adapter;
     RecyclerView recyclerView;
@@ -47,6 +58,9 @@ public class Cart extends Fragment implements View.OnClickListener {
     private ImageButton addImage;
     Bitmap thumbnail;
     Uri fullPhotoUri;
+    private DatabaseReference mDatabase;
+    private DatabaseReference itemRef=FirebaseDatabase.getInstance().getReference().child("/0000/cart/items/");
+
 
     static final int REQUEST_IMAGE_GET = 1;
 
@@ -57,8 +71,16 @@ public class Cart extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        SharedPreferences sharedPreferences=getActivity().getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE);
+        email=sharedPreferences.getString(email_key,"Oops");
+      //  Log.e("YOLO BOIS",email);
+
+
+       // mDatabase.child("/0000/cart/items").push().setValue(new Item("sdfsdfs","sdfsdfs","25","2",));
         setRetainInstance(true);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,7 +88,34 @@ public class Cart extends Fragment implements View.OnClickListener {
 
         initViews();
         initDialog();
+        ValueEventListener itemListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                adapter.clear();
+                ids.clear();
 
+
+
+                for(DataSnapshot dsp:dataSnapshot.getChildren())
+                {
+                    Log.e("PLS",dsp.getKey());
+                    adapter.addItem(dsp.getValue(Item.class));
+                    ids.add(dsp.getKey());
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+
+        itemRef.addValueEventListener(itemListener);
         return rootview;
     }
 
@@ -140,12 +189,11 @@ public class Cart extends Fragment implements View.OnClickListener {
                 int position = viewHolder.getAdapterPosition();
 
                 if (direction == ItemTouchHelper.LEFT) {
-                    adapter.removeItem(position);
-                    AddToArchive();
+                    DeleteItem(position);
                 } else {
-                    removeView();
-                    adapter.removeItem(position);
-                    TaskCompleted();
+                    //removeView();
+                    //adapter.removeItem(position);
+                    TaskCompleted(position);
                 }
             }
 
@@ -201,8 +249,19 @@ public class Cart extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (add) {
+                    Item newItem;
+                    if(fullPhotoUri!=null)
+                    {
+                        newItem=new Item(fullPhotoUri.toString(),add_item.getText().toString(),price.getText().toString(),quantity.getText().toString(),email);
+                    }
+                    else
+                    {
+                        newItem=new Item("",add_item.getText().toString(),price.getText().toString(),quantity.getText().toString(),email);
+                    }
+
                     add = false;
-                    adapter.addItem(new Item(" 1 ", add_item.getText().toString(), price.getText().toString(), quantity.getText().toString()));
+                    itemRef.push().setValue(newItem);
+
                     dialog.dismiss();
                 } else {
                     // items.set(edit_position,add_item.getText().toString());
@@ -234,7 +293,7 @@ public class Cart extends Fragment implements View.OnClickListener {
                 e.printStackTrace();
             }
 
-            Log.e("YOLO", fullPhotoUri.toString());
+        //    Log.e("YOLO", fullPhotoUri.toString());
 
             // Do work with photo saved at fullPhotoUri
 
@@ -247,12 +306,15 @@ public class Cart extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void TaskCompleted() {
+    public void TaskCompleted(int position) {
+     //   Log.e("HELP","IM HERE!");
 
+        FirebaseDatabase.getInstance().getReference().child("/0000/members/"+email+"/archive/"+ids.get(position)).setValue(adapter.getItem(position));
+        itemRef.child(""+ids.get(position)).removeValue();
     }
 
-    public void AddToArchive() {
-
+    public void DeleteItem(int position) {
+        itemRef.child(""+ids.get(position)).removeValue();
     }
 
     @Override

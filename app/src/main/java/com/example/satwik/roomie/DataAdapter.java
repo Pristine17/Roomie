@@ -49,6 +49,17 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         notifyItemInserted(items.size());
     }
 
+    public Item getItem(int position)
+    {
+        return items.get(position);
+    }
+
+    public void clear() {
+        int size = this.items.size();
+        this.items.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
     public void removeItem(int position) {
         items.remove(position);
         notifyItemRemoved(position);
