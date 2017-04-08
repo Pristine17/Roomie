@@ -32,11 +32,10 @@ public class PagerFragment extends Fragment {
 
         tabLayout=(TabLayout) result.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Statistics"));
-        tabLayout.addTab(tabLayout.newTab().setText("Archive"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
+        tabLayout.addTab(tabLayout.newTab().setText("Graph"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        pagerAdapter=new PagerAdapter(getContext(), getChildFragmentManager(),3);
+        pagerAdapter=new PagerAdapter(getContext(), getChildFragmentManager(),2);
         viewPager.setAdapter(pagerAdapter);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

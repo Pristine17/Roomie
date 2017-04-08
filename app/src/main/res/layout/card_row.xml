@@ -18,46 +18,43 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/ic_add_black_48dp" />
+            />
 
         <TextView
             android:id="@+id/itemTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
             android:text="Cookie"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="40sp"
+            android:layout_marginLeft="20dp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
         
         <TextView
             android:id="@+id/itemPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Yolo"
+            android:textColor="#4A148C"
             android:layout_marginTop="10dp"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="15dp"
-            android:textSize="16sp"/>
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/itemQuant"
             android:layout_width="wrap_content"
-            android:text="45"
+            android:textColor="#4A148C"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"
-            android:textSize="16sp"
+            android:textSize="20sp"
 
             />
-        
-        
-
-
     </RelativeLayout>
 
 

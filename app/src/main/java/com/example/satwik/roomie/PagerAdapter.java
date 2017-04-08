@@ -28,11 +28,8 @@ public class PagerAdapter extends FragmentPagerAdapter{
                 StatsFragment tab1 = new StatsFragment();
                 return tab1;
             case 1:
-                TabFragment2 tab2 = new TabFragment2();
+                GraphFragment tab2 = new GraphFragment();
                 return tab2;
-            case 2:
-                TabFragment3 tab3 = new TabFragment3();
-                return tab3;
             default:
                 return null;
         }

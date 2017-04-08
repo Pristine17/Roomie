@@ -1,5 +1,7 @@
 package com.example.satwik.roomie;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -10,6 +12,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -27,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment fragment;
     String tag = "";
     FragmentManager fragmentManager;
+    private String email;
+    final private String email_key="EMAIL";
 
 
     @Override
@@ -40,6 +46,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState == null) {
             onNavigationItemSelected(mNavigationView.getMenu().findItem(R.id.nav_home));
         }
+
+        SharedPreferences sharedPreferences=this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE);
+        email=sharedPreferences.getString(email_key,"Oops");
+
+        View hView =  mNavigationView.getHeaderView(0);
+        TextView nav_user = (TextView)hView.findViewById(R.id.headerName);
+        nav_user.setText(email);
     }
 
     @Override
@@ -59,20 +72,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (fragment == null) {
                     fragment = new PagerFragment();
                     tag = nav_home;
-                }
-                break;
-            case R.id.nav_about:
-                fragment = fragmentManager.findFragmentByTag(nav_about);
-                if (fragment == null) {
-                    //fragment=new Cart();
-                    tag = nav_about;
-                }
-                break;
-            case R.id.nav_settings:
-                fragment = fragmentManager.findFragmentByTag(nav_settings);
-                if (fragment == null) {
-                    //fragment=new Cart();
-                    tag = nav_settings;
                 }
                 break;
             case R.id.nav_account:

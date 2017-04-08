@@ -1,5 +1,6 @@
 package com.example.satwik.roomie;
 
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,10 +33,10 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(DataAdapter.ViewHolder holder, int position) {
         Item curr=items.get(position);
-      //  holder.itemImage.setImageBitmap(curr.getImage());
+       // holder.itemImage.setImageBitmap(MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), fullPhotoUri));
         holder.itemTitle.setText(curr.getItemName());
         holder.itemPrice.setText(curr.getItemPrice());
-        holder.itemPrice.setText(curr.getItemQuant());
+        holder.itemQuant.setText(curr.getItemQuant());
     }
 
     @Override

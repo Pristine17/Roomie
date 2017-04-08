@@ -1,5 +1,7 @@
 package com.example.satwik.roomie;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by satwik on 07-04-2017.
  */
@@ -8,7 +10,15 @@ public class Stats {
     private String owes;
     private String user1,user2;
 
-    public Stats(String user1,String user2,String owes)
+
+
+
+public Stats()
+{
+
+}
+
+    public Stats(String user1, String user2, String owes)
     {
 
         this.setOwes(owes);

@@ -56,7 +56,7 @@ public class Cart extends Fragment implements View.OnClickListener {
     private EditText price;
     private EditText quantity;
     private ImageButton addImage;
-    Bitmap thumbnail;
+    static public Bitmap thumbnail;
     Uri fullPhotoUri;
     private DatabaseReference mDatabase;
     private DatabaseReference itemRef=FirebaseDatabase.getInstance().getReference().child("/0000/cart/items/");

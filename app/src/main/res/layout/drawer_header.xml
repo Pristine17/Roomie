@@ -10,7 +10,8 @@
 
     <TextView
         android:layout_width="match_parent"
+        android:id="@+id/headerName"
+        android:textSize="24sp"
         android:layout_height="wrap_content"
-        android:text="Username"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 </LinearLayout>
