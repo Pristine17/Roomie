@@ -94,7 +94,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                         //checking if success
                         if(task.isSuccessful()){
                             finish();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            startActivity(new Intent(getApplicationContext(), CartCreation.class));
                         }else{
                             //display some message here
                             Toast.makeText(SignUp.this,"Registration Error",Toast.LENGTH_LONG).show();

@@ -31,14 +31,16 @@ public class StatsFragment extends Fragment {
 
     RecyclerView recyclerView;
     static String email;
+    static String cart;
     final private String email_key="EMAIL";
     final private String graph_key="GRAPH";
+    final private String id_key="ID";
    StatsAdapter adapter;
     public static HashMap<String,HashMap<String,Integer>> recievable= new HashMap<String, HashMap<String, Integer>>();
     private HashMap<String,HashMap<String,Integer>> payable=new HashMap<String, HashMap<String, Integer>>();
     RecyclerView.LayoutManager layoutManager;
     ArrayList<Stats> list = new ArrayList<Stats>();
-    private DatabaseReference archiveRef= FirebaseDatabase.getInstance().getReference().child("/0000/members");
+    private DatabaseReference archiveRef;
 
 
     @Override
@@ -47,6 +49,8 @@ public class StatsFragment extends Fragment {
 
         SharedPreferences sharedPreferences=getActivity().getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE);
         email=sharedPreferences.getString(email_key,"Oops");
+        cart=sharedPreferences.getString(id_key,"0000");
+        archiveRef= FirebaseDatabase.getInstance().getReference().child("/"+cart+"/members");
 
 }
 

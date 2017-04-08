@@ -45,6 +45,8 @@ public class Cart extends Fragment implements View.OnClickListener {
     private ArrayList<Item> items = new ArrayList<Item>();
     private ArrayList<String> ids=new ArrayList<>();
     final private String email_key="EMAIL";
+    final private String id_key="ID";
+    static String cart;
     static String email;
     View rootview;
     DataAdapter adapter;
@@ -59,7 +61,7 @@ public class Cart extends Fragment implements View.OnClickListener {
     static public Bitmap thumbnail;
     Uri fullPhotoUri;
     private DatabaseReference mDatabase;
-    private DatabaseReference itemRef=FirebaseDatabase.getInstance().getReference().child("/0000/cart/items/");
+    private DatabaseReference itemRef;
 
 
     static final int REQUEST_IMAGE_GET = 1;
@@ -74,8 +76,9 @@ public class Cart extends Fragment implements View.OnClickListener {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         SharedPreferences sharedPreferences=getActivity().getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE);
         email=sharedPreferences.getString(email_key,"Oops");
+        cart=sharedPreferences.getString(id_key,"0000");
       //  Log.e("YOLO BOIS",email);
-
+        itemRef=FirebaseDatabase.getInstance().getReference().child("/"+cart+"/cart/items/");
 
        // mDatabase.child("/0000/cart/items").push().setValue(new Item("sdfsdfs","sdfsdfs","25","2",));
         setRetainInstance(true);
@@ -309,7 +312,7 @@ public class Cart extends Fragment implements View.OnClickListener {
     public void TaskCompleted(int position) {
      //   Log.e("HELP","IM HERE!");
 
-        FirebaseDatabase.getInstance().getReference().child("/0000/members/"+email+"/archive/"+ids.get(position)).setValue(adapter.getItem(position));
+        FirebaseDatabase.getInstance().getReference().child("/"+cart+"/members/"+email+"/archive/"+ids.get(position)).setValue(adapter.getItem(position));
         itemRef.child(""+ids.get(position)).removeValue();
     }
 

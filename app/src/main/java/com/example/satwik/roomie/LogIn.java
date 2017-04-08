@@ -87,7 +87,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         //if the email and password are not empty
         //displaying a progress dialog
 
-        progressDialog.setMessage("Registering Please Wait...");
+        progressDialog.setMessage("Logging in, Please Wait...");
         progressDialog.show();
 
         //logging in the user
@@ -107,7 +107,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
                             editor.commit();
                             //start the profile activity
                             finish();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            startActivity(new Intent(getApplicationContext(), CartCreation.class));
                         }
                     }
                 });

@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import android.net.Uri;
+import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -42,15 +43,22 @@ public class ProfileFragment  extends Fragment {
     static final int REQUEST_IMAGE_GET = 1;
     private Uri fullPhotoUri;
     final private String email_key="EMAIL";
-    private String email;
-    private Bitmap thumbnail;
-    DatabaseReference mRef=FirebaseDatabase.getInstance().getReference().child("/0000/members");
+    final private String id_key="ID";
 
+    private String email;
+    private String cartID;
+    private Bitmap thumbnail;
+    private TextView profileName;
+    private TextView groupID;
+    DatabaseReference mRef;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences=getActivity().getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE);
         email=sharedPreferences.getString(email_key,"Oops");
+        cartID=sharedPreferences.getString(id_key,"Oopps");
+        DatabaseReference mRef=FirebaseDatabase.getInstance().getReference().child("/"+cartID+"/members");
+
     }
 
     @Override
@@ -70,6 +78,10 @@ public class ProfileFragment  extends Fragment {
             }
         });
 
+        profileName=(TextView) view.findViewById(R.id.user_profile_name);
+        profileName.setText(email);
+        groupID=(TextView) view.findViewById(R.id.user_profile_short_bio);
+        groupID.setText(" Cart ID :  "+cartID);
         return view;
 
     }
@@ -86,7 +98,7 @@ public class ProfileFragment  extends Fragment {
             }
 
             profileButton.setImageBitmap(thumbnail);
-            mRef.child("/"+email+"/profilepic").setValue(fullPhotoUri.toString());
+//            mRef.child("/"+email+"/profilepic").setValue(fullPhotoUri.toString());
 
             //    Log.e("YOLO", fullPhotoUri.toString());
 
